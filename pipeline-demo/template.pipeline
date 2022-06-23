@@ -1,6 +1,7 @@
 @Library('javahome-demo') _
 def environmentParams = EnvironmentVariables.split(",")
-
+def customParams = CustomParameters.split(",")
+@Field def Map<String,String> parameterMap = new HashMap<String, String>()
 
 pipeline{
   agent any
@@ -21,12 +22,27 @@ pipeline{
 				if(envParam.size()==2) {
 				env.(envParam[0].toString()) = (envParam[1].toString())
 				 } 
-               else {
+                else {
 			        errorList.add(InjectEnvironmentVariablesErrorMessage)
 				 }
 				 
-		}
-		}
+	      }
+	      }
+		println "loading CustomParameters"
+		customParams.each{
+				println it
+				if(it!=null || !it.toString().isEmpty()) {
+				ArrayList jobParam = it.toString().trim().split("=")
+				println jobParam.size();
+				if(jobParam.size()==2) 
+				    {
+					parameterMap.put(jobParam[0], jobParam[1])
+				    }
+				else {
+					errorList.add(customParamErrorMessage)
+				    }
+				}
+			}
 	}
         }
       }
