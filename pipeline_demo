@@ -1,7 +1,7 @@
 @Library('javahome-demo') _
 def environmentParams = EnvironmentVariables.split(",")
 def customParams = CustomParameters.split(",")
-@Field def Map<String,String> parameterMap = new HashMap<String, String>()
+def Map<String,String> parameterMap = new HashMap<String, String>()
 
 pipeline{
   agent any
